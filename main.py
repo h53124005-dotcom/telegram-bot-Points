@@ -1,12 +1,10 @@
 import json
 import os
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-# ======================
-# 🔐 التوكن (حطه هنا مباشرة لو ما تستخدم Environment Variables)
-# ======================
-TOKEN = os.getenv("TOKEN") or "حط_توكن_البوت_هنا"
+# ✅ حط التوكن هنا مباشرة (أفضل من getenv في الاستضافة)
+TOKEN = "حط_توكن_البوت_هنا"
 
 DATA = "points.json"
 
@@ -20,7 +18,7 @@ def load():
             with open(DATA, "r") as f:
                 return json.load(f)
         except:
-            return {"users": {}, "teams": {}}
+            pass
     return {"users": {}, "teams": {}}
 
 
@@ -94,7 +92,7 @@ async def top(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if not TOKEN:
     raise ValueError("❌ TOKEN غير موجود!")
 
-app = ApplicationBuilder().token(TOKEN).build()
+app = Application.builder().token(TOKEN).build()
 
 app.add_handler(CommandHandler("dxp", dxp))
 app.add_handler(CommandHandler("rep", rep))
